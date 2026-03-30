@@ -1,28 +1,56 @@
-// File: TrainConsistManagementAppUC5.java
+// File: TrainConsistManagementAppUC7.java
 
-import java.util.LinkedHashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
+class Bogie {
+    private String name;
+    private int capacity;
+
+    public Bogie(String name, int capacity) {
+        this.name = name;
+        this.capacity = capacity;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    @Override
+    public String toString() {
+        return name + " (Capacity: " + capacity + ")";
+    }
+}
 
 public class TrainConsistManagementApp {
 
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
 
-        // Initialize LinkedHashSet for train formation
-        Set<String> trainFormation = new LinkedHashSet<>();
+        // Create list of passenger bogies
+        List<Bogie> passengerBogies = new ArrayList<>();
+        passengerBogies.add(new Bogie("Sleeper", 72));
+        passengerBogies.add(new Bogie("AC Chair", 56));
+        passengerBogies.add(new Bogie("First Class", 40));
 
-        // Attach bogies
-        trainFormation.add("Engine");
-        trainFormation.add("Sleeper");
-        trainFormation.add("Cargo");
-        trainFormation.add("Guard");
+        System.out.println("Before Sorting:");
+        for (Bogie b : passengerBogies) {
+            System.out.println(b);
+        }
 
-        // Attempt to attach a duplicate bogie
-        trainFormation.add("Sleeper"); // duplicate ignored automatically
+        // Sort bogies by capacity using Comparator
+        passengerBogies.sort(Comparator.comparingInt(Bogie::getCapacity).reversed());
 
-        // Display final formation
-        System.out.println("Final Train Formation (Insertion Order Preserved): " + trainFormation);
+        System.out.println("\nAfter Sorting by Capacity (High → Low):");
+        for (Bogie b : passengerBogies) {
+            System.out.println(b);
+        }
 
-        System.out.println("System ready for further operations...");
+        System.out.println("\nSystem ready for further operations...");
     }
 }
