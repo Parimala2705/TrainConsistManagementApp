@@ -1,9 +1,8 @@
-
-// File: TrainConsistManagementAppUC7.java
+// File: TrainConsistManagementAppUC8.java
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 class Bogie {
     private String name;
@@ -28,8 +27,7 @@ class Bogie {
     }
 }
 
-public class TrainConsistManagementApp
-{
+public class TrainConsistManagementApp{
 
     public static void main(String[] args) {
         System.out.println("=== Train Consist Management App ===");
@@ -40,18 +38,16 @@ public class TrainConsistManagementApp
         passengerBogies.add(new Bogie("AC Chair", 56));
         passengerBogies.add(new Bogie("First Class", 40));
 
-        System.out.println("Before Sorting:");
-        for (Bogie b : passengerBogies) {
-            System.out.println(b);
-        }
+        System.out.println("Original Bogie List:");
+        passengerBogies.forEach(System.out::println);
 
-        // Sort bogies by capacity using Comparator
-        passengerBogies.sort(Comparator.comparingInt(Bogie::getCapacity).reversed());
+        // Apply Stream filter: capacity > 60
+        List<Bogie> highCapacityBogies = passengerBogies.stream()
+                .filter(b -> b.getCapacity() > 60)
+                .collect(Collectors.toList());
 
-        System.out.println("\nAfter Sorting by Capacity (High → Low):");
-        for (Bogie b : passengerBogies) {
-            System.out.println(b);
-        }
+        System.out.println("\nFiltered Bogies (Capacity > 60):");
+        highCapacityBogies.forEach(System.out::println);
 
         System.out.println("\nSystem ready for further operations...");
     }
