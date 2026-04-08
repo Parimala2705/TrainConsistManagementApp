@@ -1,53 +1,55 @@
+import java.util.*;
 
-// File: TrainConsistManagementAppUC10.java
+class GoodsBogie {
+    private String type;   // e.g., "Cylindrical", "Rectangular", "Box"
+    private String cargo;  // e.g., "Petroleum", "Coal", "Grain"
 
-import java.util.ArrayList;
-import java.util.List;
-
-class Bogie {
-    private String name;
-    private int capacity;
-
-    public Bogie(String name, int capacity) {
-        this.name = name;
-        this.capacity = capacity;
+    public GoodsBogie(String type, String cargo) {
+        this.type = type;
+        this.cargo = cargo;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
-    public int getCapacity() {
-        return capacity;
+    public String getCargo() {
+        return cargo;
     }
 
     @Override
     public String toString() {
-        return name + " (Capacity: " + capacity + ")";
+        return "GoodsBogie{" +
+                "type='" + type + '\'' +
+                ", cargo='" + cargo + '\'' +
+                '}';
     }
 }
 
 public class TrainConsistManagementApp {
-
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App ===");
+        // Prepare a list of goods bogies
+        List<GoodsBogie> bogies = Arrays.asList(
+                new GoodsBogie("Cylindrical", "Petroleum"),
+                new GoodsBogie("Rectangular", "Coal"),
+                new GoodsBogie("Box", "Grain"),
+                new GoodsBogie("Cylindrical", "Petroleum")
+        );
 
-        // Create list of passenger bogies
-        List<Bogie> passengerBogies = new ArrayList<>();
-        passengerBogies.add(new Bogie("Sleeper", 72));
-        passengerBogies.add(new Bogie("AC Chair", 56));
-        passengerBogies.add(new Bogie("First Class", 40));
+        // Safety compliance check using Streams
+        boolean isSafe = bogies.stream()
+                .allMatch(bogie -> {
+                    if (bogie.getType().equalsIgnoreCase("Cylindrical")) {
+                        return bogie.getCargo().equalsIgnoreCase("Petroleum");
+                    }
+                    return true; // Non-cylindrical bogies can carry any cargo
+                });
 
-        System.out.println("Passenger Bogie List:");
-        passengerBogies.forEach(System.out::println);
-
-        // Stream pipeline: map capacity → reduce to sum
-        int totalSeats = passengerBogies.stream()
-                .map(Bogie::getCapacity)
-                .reduce(0, Integer::sum);
-
-        System.out.println("\nTotal Seating Capacity in Train: " + totalSeats);
-
-        System.out.println("\nSystem ready for further operations...");
+        // Display result
+        if (isSafe) {
+            System.out.println(" Train formation is SAFE. All bogies comply with safety rules.");
+        } else {
+            System.out.println(" Train formation is UNSAFE. Safety compliance failed.");
+        }
     }
 }
