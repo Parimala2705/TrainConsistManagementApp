@@ -1,20 +1,17 @@
+import java.util.*;
+import java.util.stream.Collectors;
 
-// File: TrainConsistManagementAppUC10.java
+class PassengerBogie {
+    private String type;   // Sleeper, AC Chair, First Class
+    private int capacity;  // seat capacity
 
-import java.util.ArrayList;
-import java.util.List;
-
-class Bogie {
-    private String name;
-    private int capacity;
-
-    public Bogie(String name, int capacity) {
-        this.name = name;
+    public PassengerBogie(String type, int capacity) {
+        this.type = type;
         this.capacity = capacity;
     }
 
-    public String getName() {
-        return name;
+    public String getType() {
+        return type;
     }
 
     public int getCapacity() {
@@ -23,31 +20,32 @@ class Bogie {
 
     @Override
     public String toString() {
-        return name + " (Capacity: " + capacity + ")";
+        return "PassengerBogie{" +
+                "type='" + type + '\'' +
+                ", capacity=" + capacity +
+                '}';
     }
 }
 
 public class TrainConsistManagementApp {
-
     public static void main(String[] args) {
-        System.out.println("=== Train Consist Management App ===");
+        // Prepare dataset
+        List<PassengerBogie> bogies = Arrays.asList(
+                new PassengerBogie("Sleeper", 72),
+                new PassengerBogie("AC Chair", 55),
+                new PassengerBogie("First Class", 80),
+                new PassengerBogie("Sleeper", 60),
+                new PassengerBogie("AC Chair", 90)
+        );
 
-        // Create list of passenger bogies
-        List<Bogie> passengerBogies = new ArrayList<>();
-        passengerBogies.add(new Bogie("Sleeper", 72));
-        passengerBogies.add(new Bogie("AC Chair", 56));
-        passengerBogies.add(new Bogie("First Class", 40));
-
-        System.out.println("Passenger Bogie List:");
-        passengerBogies.forEach(System.out::println);
-
-        // Stream pipeline: map capacity → reduce to sum
-        int totalSeats = passengerBogies.stream()
-                .map(Bogie::getCapacity)
+        // Stream aggregation: map capacity → reduce sum
+        int totalSeats = bogies.stream()
+                .map(PassengerBogie::getCapacity)
                 .reduce(0, Integer::sum);
 
-        System.out.println("\nTotal Seating Capacity in Train: " + totalSeats);
-
-        System.out.println("\nSystem ready for further operations...");
+        // Display results
+        System.out.println("Passenger Bogies: " + bogies);
+        System.out.println("Total seating capacity of train: " + totalSeats);
     }
 }
+
